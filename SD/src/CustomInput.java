@@ -65,8 +65,6 @@ public class CustomInput {
 			String[] depa = getDepa(depaMember);
 			
 			stuObj[i].put("student_no", sno[i]);
-//			stuObj[i].put("free_time", free);
-//			stuObj[i].put("tags", tags);
 			stuObj[i].put("applications_department", depa);
 			tmp.put(stuObj[i]);
 		}
@@ -79,42 +77,12 @@ public class CustomInput {
 		for(int i = 0; i < depaMember; i++){
 			int index = random.nextInt(20);
             tmp[i] = dno[index];
-//            System.out.println(tmp[i]);
+
 		}
 		return tmp;
 	}
 
 
-	/*
-	private JSONArray getstua() {
-		
-		JSONObject[] depaObj;
-		JSONArray tmp = new JSONArray();
-		
-		ArrayList<String> free = new ArrayList<String>();
-		ArrayList<String> depa = new ArrayList<String>();
-		ArrayList<String> tags = new ArrayList<String>();
-		String sno = "031502424";
-		
-		free.add("Wed.16:00~18:00");
-		free.add("Wed.20:00~22:00");
-		depa.add("D019");
-		depa.add("D018");
-		tags.add("study");
-		tags.add("film");
-		
-	}
-	*/
-
-	/*
-	public static void main(String[] args) {
-		CustomInput custom = new CustomInput();
-		custom.init();
-		custom.customInput();
-		
-		 
-
-	}
-	*/
+	
 
 }

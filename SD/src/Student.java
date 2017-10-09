@@ -9,7 +9,7 @@ public class Student {
 	String[] tags;
 	String[] deptments;
 	String[] freeTime;
-	int[][] dateTime;//将空闲时间字符串转为数字
+	int[][] dateTime;
 	int numAdmit;
 	
 	Student(int dept_sz,int tag_sz,int free_sz) {
@@ -61,7 +61,7 @@ public class Student {
 
 
 	private  static void print(int[][] sample2) {
-		// TODO Auto-generated method stub
+		
 		for(int i = 0; i< sample2.length; i++){
 			System.out.println(sample2[i][0]+" "+sample2[i][1]);
 		}
@@ -85,9 +85,8 @@ public class Student {
 		dateTime = (int[][])helpList.toArray();
 	}
 
-	//截取时间字符串，转换成时间
 		private int[] dealFreeTime(String string) {
-			// TODO Auto-generated method stub
+			
 			int[] tmp = new int[2];
 			int point_loc = string.indexOf('.');
 			int wave_loc = string.indexOf('~');
@@ -130,9 +129,6 @@ public class Student {
 			
 			tmp[0]+=weeks*24*60;
 			tmp[1]+=weeks*24*60;
-//			System.out.println(week+" "+tmp[0]);
-//			System.out.println(begin_hour+":"+begin_minute+" "+tmp[1]);
-//			System.out.println(over_hour+":"+over_minute+" "+tmp[2]);
 			return tmp;
 		}
 	

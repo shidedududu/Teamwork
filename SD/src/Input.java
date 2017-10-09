@@ -8,13 +8,13 @@ import org.json.JSONTokener;
 
 public class Input {
 	
-	static final String PATH = "src/input_data.txt";
+	static final String path = "src/input_data.txt";
 	static final String STUDENTS = "students";
-	static final int SNUM = 300;
+	static final int student_num = 300;
 	static final String DEPARTMENTS = "departments";
 	static final int DNUM = 20;
 	
-	static Student[] stu = new Student[SNUM];
+	static Student[] stu = new Student[student_num];
 	static Department[] depa = new Department[DNUM];
 	/*
 	Input() throws Exception{
@@ -24,7 +24,7 @@ public class Input {
 	public void dealInput() throws Exception {
 		
 		//读取文件，将JSONTokener对象作为参数来构造JSONObject或JSONArray
-		FileReader reader = new FileReader(new File(PATH));
+		FileReader reader = new FileReader(new File(path));
 		JSONTokener jsonTokener = new JSONTokener(reader);
 		
 		//由于输入文本最外面是object类型
@@ -79,36 +79,30 @@ public class Input {
 		final String STIME = "free_time";
 		final String SDEPT = "applications_department";
 		
-		for(int i=0;i<SNUM;i++){
+		for(int i=0;i<student_num;i++){
 	    	//students有四个字段，编号，部门意愿，空闲时间，标签，后三个为JSONArray类型
 	    	JSONObject student = students2.getJSONObject(i);
 	    	String sno = student.getString(SNO);
 	    	JSONArray sdept = student.getJSONArray(SDEPT);
 	    	JSONArray stags = student.getJSONArray(STAGS);
-	    	JSONArray stime = student.getJSONArray(STIME);
+	    	JSONArray free_time= student.getJSONArray(STIME);
 	    	
 	    	if (stu[i] == null) {
 	    		int dept_sz = sdept.length();
 	    		int tag_sz = stags.length();
-	    		int free_sz = stime.length();
+	    		int free_sz = free_time.length();
 	    		stu[i] = new Student(dept_sz,tag_sz,free_sz);
 	    	}
-	    	//Sno
-	    	stu[i].setNo(sno);
 	    	
-	    	//Sdept
+	    	stu[i].setNo(sno);
 	    	for(int j=0;j<sdept.length();j++){
 	    		stu[i].setDeptments(j, sdept.getString(j));
 	    	}
-	    	
-	    	//Stag
 	    	for(int j=0;j<stags.length();j++){
 	    		stu[i].setTags(j, stags.getString(j));
 	    	}
-	    	
-	    	//Sfree
-	    	for(int j=0;j<stime.length();j++){
-	    		stu[i].setFreeTime(j, stime.getString(j));
+	    	for(int j=0;j<free_time.length();j++){
+	    		stu[i].setFreeTime(j, free_time.getString(j));
 
 	    	}
 	    	stu[i].setDateTime();

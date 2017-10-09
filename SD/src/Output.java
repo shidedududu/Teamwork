@@ -22,40 +22,28 @@ public class Output {
 	
 	public void Print() throws Exception{
 		
-        PrintStream ps = new PrintStream("./1.txt");
+        PrintStream ps = new PrintStream("./output.txt");
         System.setOut(ps);//把创建的打印输出流赋给系统。即系统下次向 ps输出
         
-        String s1 = "unlucky_student";
+        String c1 = "unlucky_student";
         unluckyStudent = getUnluckStudent();
-        lastResult.put(s1, unluckyStudent);
+        lastResult.put(c1, unluckyStudent);
         
         
-        String s2 = "admitted";
+        String c2 = "admitted";
         admitted = getAdmitted();
-        lastResult.put(s2, admitted);
+        lastResult.put(c2, admitted);
         
-        String s3 = "unlucky_department";
+        String c3 = "unlucky_department";
         unluckyDepartment = getUnluckyDepartment();
-        lastResult.put(s3, unluckyDepartment);
+        lastResult.put(c3, unluckyDepartment);
 		 
 		
         JSONObject mapJson = new JSONObject(lastResult);
 		System.out.println(mapJson);
 		
 		
-		/*
-		 * {
-    "admitted": [
-        {
-            "member": [
-                "031502141"
-            ],
-            "department_no": "D001"
-        },
-    ...
-    ]
-}
-		 */
+		
 	}
 
 	private JSONArray getAdmitted() {

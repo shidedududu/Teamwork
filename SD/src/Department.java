@@ -4,12 +4,12 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Department {
-	private String no;
+	private String No;
 	private int memberLimit;
 	private String[] tags;
 	private String[] eventSchedules;
 	private int[][] dateTime;//将空闲时间字符串转为数字
-	private int numRemaining;
+	private int numRemain;
 	
 	Department(int tag_sz,int sch_sz){
 		tags = new String[tag_sz];
@@ -68,7 +68,6 @@ public class Department {
 		dateTime = (int[][])helpList.toArray();
 	}
 	
-    //截取时间字符串，转换成时间
 	private int[] dealDsch(String string) {
 		// TODO Auto-generated method stub
 		int[] tmp = new int[2];
@@ -118,11 +117,11 @@ public class Department {
 	}
 	
 	public String getNo() {
-		return no;
+		return No;
 	}
 
 	public void setNo(String no) {
-		this.no = no;
+		this.No = No;
 	}
 
 	public int getMemberLimit() {
@@ -131,15 +130,15 @@ public class Department {
 
 	public void setMemberLimit(int memberLimit) {
 		this.memberLimit = memberLimit;
-		this.numRemaining = memberLimit;
+		this.numRemain = memberLimit;
 	}
 
 	public int getNumRemaining() {
-		return numRemaining;
+		return numRemain;
 	}
 
 	public void setNumRemaining(int numRemaining) {
-		this.numRemaining = numRemaining;
+		this.numRemain= numRemaining;
 	}
 
 	public String[] getTags() {

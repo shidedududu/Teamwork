@@ -117,7 +117,7 @@ public class Match {
 		
 		//将学生学号，按照标签匹配排序，标签匹配为匹配标签数目除以学生总标签
 		String[] stuNo = (String[])tmp.toArray(new String[tmp.size()]);
-		double[] rate = new double[tmp.size()];
+		int[] num4 = new int[tmp.size()];
 		String[] depaTags = Input.depa[index].getTags();
 		
 		for(int i = 0 ; i < stuNo.length; i++){
@@ -125,9 +125,9 @@ public class Match {
 			int indexx = stuMap.get(sno);
 			String[] stuTags = Input.stu[indexx].getTags();//得到学生标签
 			
-			rate[i] = getRate(depaTags,stuTags);
+			num4[i] = getnum4(depaTags,stuTags);
 		}
-		stuNo = mysort(rate,stuNo);
+		stuNo = mysort(num4,stuNo);
 		
 		ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(stuNo));
 		//淘汰末尾元素
@@ -140,18 +140,18 @@ public class Match {
 		return arrayList;
 	}
 
-	private String[] mysort(double[] rate, String[] stuNo) {
+	private String[] mysort(int[] num4, String[] stuNo) {
 		
-		for(int i = 0; i < rate.length-1; i++){
+		for(int i = 0; i < num4.length-1; i++){
 			int k = i;
-			for(int j = i+1; j<rate.length; j++){
-				if(rate[j] > rate[k]) k=j;
+			for(int j = i+1; j<num4.length; j++){
+				if(num4[j] > num4[k]) k=j;
 			}
 			if(k!=i){
-				double temp1;
-				temp1=rate[k];
-				rate[k]=rate[i];
-				rate[i]=temp1;
+				int temp1;
+				temp1=num4[k];
+	num4[k]=num4[i];
+				num4[i]=temp1;
 				
 				String temp2;
 				temp2=stuNo[k];
@@ -165,7 +165,7 @@ public class Match {
 		return stuNo;
 	}
 
-	private double getRate(String[] depaTags, String[] stuTags) {
+	private int getnum4(String[] depaTags, String[] stuTags) {
 		// TODO Auto-generated method stub
 		int num1 = depaTags.length;
 		int num2 = stuTags.length;
@@ -177,8 +177,8 @@ public class Match {
 				}
 			}
 		}
-		double rate = (double)num/num2;
-		return rate;
+		
+		return num;
 	}
 
 	private void dealNumAdmit(ArrayList<String> tmp) {
