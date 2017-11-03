@@ -1,0 +1,64 @@
+apktool d [-s] -f com.thinkernote.Team.apk -o app1
+d2j-dex2jar.bat classes.dex
+ ProgressDialog progressDialog=new ProgressDialog(MainActivity.this);
+                progressDialog.setTitle("傻逼");
+                progressDialog.setMessage("Loading...");
+                progressDialog.setCancelable(true);
+                progressDialog.show();
+                if(progressBar.getVisibility()==View.GONE){
+                    progressBar.setVisibility(View.VISIBLE);
+                } else{
+                    progressBar.setVisibility(View.GONE);
+                }
+                imageView.setImageResource(R.drawable.img_2);
+                String inputText=editText.getText().toString();
+                Toast.makeText(MainActivity.this,inputText,
+                        Toast.LENGTH_SHORT).show();
+
+
+
+
+ AlertDialog.Builder dialog =new AlertDialog.Builder(MainActivity.this);
+                dialog.setTitle("This is Dialog ");
+                dialog.setMessage("something ");
+                dialog.setCancelable(false);
+                dialog.setPositiveButton("ok",new DialogInterface.OnClickListener(){
+                   @Override
+                    public void onClick(DialogInterface dialog,int which){
+                   }
+                });
+                dialog.setNegativeButton("Cancel",new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog,int which){
+                    }
+                });
+                dialog.show();
+
+
+
+  <Button
+        android:id="@+id/button_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button 1"
+        />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+团队协作app
+ <receiver android:name=".location.GeofenceTransitionsIntentService$Broadcast" />
+        <service
+            android:name=".location.GeofenceTransitionsIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="false" />
