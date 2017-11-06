@@ -9,16 +9,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 public class SelectActivity extends AppCompatActivity {
 
     private EditText name;
-    private EditText phoneNumber;
-    private EditText weChatNumber;
-    private EditText qqNumber;
+    private Button selectBtn;
+    private String nameStr;
     private SQLiteDatabase DB;
     private ListView values;
     private Button selectAllBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +28,10 @@ public class SelectActivity extends AppCompatActivity {
 
         //
         name=(EditText)findViewById(R.id.nameEditText);
-        phoneNumber=(EditText)findViewById(R.id.phoneNumberEditText);
-        qqNumber=(EditText)findViewById(R.id.qqNumberEditText);
         selectAllBtn=(Button)findViewById(R.id.SelectAllButton);
-        values=(ListView)findViewById(R.id.selectResultListView);
+        values=(ListView)findViewById(R.id.selectResultView);
+        selectBtn=(Button)findViewById(R.id.SelectButton);
+
 
         // 获取SQLiteDatabase以操作SQL语句
         DB = SQLiteDatabase.openOrCreateDatabase(getFilesDir() + "/info.db",
@@ -39,24 +40,41 @@ public class SelectActivity extends AppCompatActivity {
         //
         selectAllBtn.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                read(v);
+                read(v,selectAll());
             }
         });
 
+        //
+        selectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nameStr=name.getText().toString();
+              if(nameStr.trim().isEmpty()){
+                  Toast.makeText(SelectActivity.this,"输入不能为空", Toast.LENGTH_SHORT).show();
+              }
+              else{
+                  read(v,select(nameStr));
+              }
+            }
+        });
     }
 
     /**
      * 读取按钮点击事件，以列表的形式显示所有内容
      */
-    public void read(View v) {
-        replaceList();
+    public void read(View v,Cursor cursor) {
+        replaceList(cursor);
     }
 
     /**
      * ListView的适配器
      */
-    public void replaceList() {
-        Cursor cursor = select();
+
+    public void replaceList(Cursor cursor) {
+        if (cursor.getCount() == 0) {
+            Toast.makeText(this, "查无此人", Toast.LENGTH_SHORT).show();
+            return;
+        }
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
                 R.layout.values_items, cursor, new String[] { "name", "phonenumber",
                 "qqnumber","wechatnumber" }, new int[] { R.id.nameView, R.id.phoneNumberView,
@@ -65,9 +83,16 @@ public class SelectActivity extends AppCompatActivity {
         values.setAdapter(adapter);
     }
 
-    public Cursor select() {
-        String selectSql = "select _id,name,phonenumber,qqnumber,wechatnumber from classmate";
-        Cursor cursor = DB.rawQuery(selectSql, null);// 我们需要查处所有项故不需要查询条件
+    public Cursor selectAll() {
+        String selectAllSql = "select _id,name,phonenumber,qqnumber,wechatnumber from classmate";
+        Cursor cursor = DB.rawQuery(selectAllSql, null);// 我们需要查处所有项故不需要查询条件
         return cursor;
     }
+
+    public Cursor select(String name){
+        String selectSql="select _id,name,phonenumber,qqnumber,wechatnumber from classmate where name=?";
+        Cursor cursor=DB.rawQuery(selectSql,new String[]{name});
+        return  cursor;
+    }
+
 }
