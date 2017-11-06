@@ -56,7 +56,10 @@ public class AddActivity extends AppCompatActivity {
         String mailBoxNumber=this.mailBoxNumber.getText().toString();
         String qqNumber=this.qqNumber.getText().toString();
         String personalDescription=this.pensonalDescription.getText().toString();
-
+        if(name.trim().isEmpty()){
+            Toast.makeText(this,"输入不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
         try {
             dataInsert(name, address, phoneNumber, weChatNumber, mailBoxNumber, qqNumber, personalDescription);
         }

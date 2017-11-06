@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://C:\Users\win10\Desktop\Classmate-book-master\Classmate-book.iml" filepath="C:\Users\win10\Desktop\Classmate-book-master\Classmate-book.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Classmate-book-master.iml" filepath="$PROJECT_DIR$/Classmate-book-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Classmate-book.iml" filepath="$PROJECT_DIR$/Classmate-book.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
