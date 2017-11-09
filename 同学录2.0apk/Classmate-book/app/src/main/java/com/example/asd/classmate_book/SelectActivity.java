@@ -45,6 +45,7 @@ public class SelectActivity extends AppCompatActivity {
 
         //
         selectAllBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
                 try {
                     read(v, selectAll());
