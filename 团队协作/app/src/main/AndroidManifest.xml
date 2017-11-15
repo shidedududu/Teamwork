@@ -17,7 +17,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddProject_Activity" />
-        <activity android:name=".TaskActivity"></activity>
+        <activity android:name=".Task_Activity" />
+        <activity android:name=".Look_Up_Activity" />
+        <activity android:name=".Item_modified_Activity"></activity>
     </application>
 
 </manifest>
