@@ -32,12 +32,14 @@ public class Fragment1 extends Fragment{
     private static final int ITEM2=Menu.FIRST+1;
     private static final int ITEM3=Menu.FIRST+2;
     ArrayAdapter<String> adapter;
-
+    String itemname;
+    String deadlinetime;
+    String itemdescribe;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment1,container,false);
-        Button button =  (Button)view.findViewById(R.id.add_item);
-        ListView listView=(ListView) view.findViewById(R.id.list);
+        Button button = view.findViewById(R.id.add_item);
+        ListView listView= view.findViewById(R.id.add_list);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,13 +48,13 @@ public class Fragment1 extends Fragment{
             }
         });
         this.registerForContextMenu(listView);
-         adapter = new  ArrayAdapter<String> (getActivity(),android.R.layout.simple_list_item_1,projectname);
+        adapter = new  ArrayAdapter<String> (getActivity(),android.R.layout.simple_list_item_1,projectname);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent= new Intent(getActivity(),TaskActivity.class);
-                startActivity(intent);
+                Intent intent1= new Intent(getActivity(),Task_Activity.class);
+                startActivity(intent1);
             }
         });
 
@@ -75,10 +77,13 @@ public class Fragment1 extends Fragment{
         switch (requestCode){
             case 1:
                 if (resultCode ==getActivity().RESULT_OK){
-                     projectname.add(data.getStringExtra("data_return"));
-                     adapter.notifyDataSetChanged();
+                    itemname=data.getStringExtra("name");
+                    deadlinetime=data.getStringExtra("deadline");
+                    itemdescribe=data.getStringExtra("describe");
+                    projectname.add(itemname);
+                    adapter.notifyDataSetChanged();
                 }break;
-            default:break;
+                default:
         }
     }
     @Override
@@ -91,6 +96,11 @@ public class Fragment1 extends Fragment{
                 adapter.notifyDataSetChanged();
                 break;
             case ITEM2:
+               Intent intent=new Intent(getActivity(),Look_Up_Activity.class);
+                intent.putExtra("name",itemname);
+                intent.putExtra("deadline",deadlinetime);
+                intent.putExtra("describe",itemdescribe);
+                startActivity(intent);
                 break;
             case ITEM3:
                 break;
