@@ -1,4 +1,4 @@
-package com.example.myapplication;
+ackage com.example.myapplication;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
