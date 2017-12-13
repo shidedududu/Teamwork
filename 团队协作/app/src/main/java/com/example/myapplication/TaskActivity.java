@@ -1,9 +1,9 @@
-package com.example.myapplication;
+package com.example.administrator.team;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class TaskActivity extends AppCompatActivity {
+public class taskActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
