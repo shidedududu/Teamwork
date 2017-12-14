@@ -1,9 +1,11 @@
 package com.example.administrator.team;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import java.util.Calendar;
 import android.database.Cursor;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.View;
 import android.widget.SimpleCursorAdapter;
@@ -17,19 +19,19 @@ import android.widget.TextView;
 public class AddProjectActivity extends AppCompatActivity {
     private SQLiteDatabase DB;
     private EditText projectname;
-
+    private boolean isNoneOfInput=true;
     private EditText projectdescription;
     //private String deadline;
     //String deadline;
     TextView btn;
-    private EditText et;
+    //private EditText et;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_project);
 
             btn = (TextView) findViewById(R.id.dateBtn);
-            et = (EditText) findViewById(R.id.et);
+            //et = (EditText) findViewById(R.id.et);
         // 获取SQLiteDatabase以操作SQL语句
         DB = SQLiteDatabase.openOrCreateDatabase(getFilesDir() + "/info.db",
                 null);
@@ -46,7 +48,7 @@ public class AddProjectActivity extends AppCompatActivity {
                         public void onDateSet( DatePicker endDatePicker, int endYear, int endMonthOfYear,
                                               int endDayOfMonth) {
                             String textString = String.format("%d-%d-%d", endYear, endMonthOfYear + 1, endDayOfMonth);
-                            et.setText(textString);
+                            btn.setText(textString);
                            // deadline=textString;
                         }
                     }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), true).show();
@@ -57,26 +59,34 @@ public class AddProjectActivity extends AppCompatActivity {
 
         //获取添加界面中输入的数据
         projectname=(EditText)findViewById(R.id.project_name);
-        et=(EditText)findViewById(R.id.et);
+        btn=(TextView)findViewById(R.id.dateBtn);
         projectdescription=(EditText)findViewById(R.id.project_description);
-
         //按下添加按钮后对数据库进行操作
-        Button addBtn=(Button)findViewById(R.id.add);
+        FloatingActionButton addBtn=(FloatingActionButton)findViewById(R.id.add);
         addBtn.setOnClickListener(new View.OnClickListener() {
                                       public void onClick(View v) {
                                           dataSave();
+                                          if(isNoneOfInput==false)
+                                          {
+                                              //返回projectActivity
+                                              Intent intent = new Intent(AddProjectActivity.this,projectActivity .class);
+                                              startActivity(intent);
+                                              finish();
+                                          }
                                       }
                                   }
         );
+
         }
     public void dataSave(){
         String project=this.projectname.getText().toString();
-        String deadline=this.et.getText().toString();
+        String deadline=this.btn.getText().toString();
         String description=this.projectdescription.getText().toString();
         if(project.trim().isEmpty()){
             Toast.makeText(this,"项目名称不能为空", Toast.LENGTH_SHORT).show();
-            return;
+            return ;
         }
+        isNoneOfInput=false;
         try {
             dataInsert(project, deadline,description);
         }
@@ -90,7 +100,7 @@ public class AddProjectActivity extends AppCompatActivity {
 
         //清空输入栏
        this.projectname.setText("");
-        this.et.setText("");
+        this.btn.setText("");
        this.projectdescription.setText("");
 
     }
