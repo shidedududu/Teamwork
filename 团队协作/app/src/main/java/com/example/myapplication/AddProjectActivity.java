@@ -1,4 +1,4 @@
-package com.example.administrator.team;
+package com.example.asd.testapp;
 
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -6,15 +6,19 @@ import android.os.Bundle;
 import java.util.Calendar;
 import android.database.Cursor;
 import android.content.Intent;
+
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.Toast;
-import android.widget.ListView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class AddProjectActivity extends AppCompatActivity {
     private SQLiteDatabase DB;
@@ -30,30 +34,20 @@ public class AddProjectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_project);
 
-            btn = (TextView) findViewById(R.id.dateBtn);
-            //et = (EditText) findViewById(R.id.et);
+
         // 获取SQLiteDatabase以操作SQL语句
         DB = SQLiteDatabase.openOrCreateDatabase(getFilesDir() + "/info.db",
                 null);
 
-            btn.setOnClickListener(new View.OnClickListener() {
-                Calendar c = Calendar.getInstance();
+        btn.setOnClickListener(new View.OnClickListener() {
+            Calendar c = Calendar.getInstance();
 
-                @Override
-                public void onClick(View v) {
-                    // 最后一个false表示不显示日期，如果要显示日期，最后参数可以是true或者不用输入
-                    new DoubleDatePickerDialog(AddProjectActivity.this, 0, new DoubleDatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onClick(View v) {
+                // 最后一个false表示不显示日期，如果要显示日期，最后参数可以是true或者不用输入
+                new DoubleDatePickerDialog(AddProjectActivity.this, 0, new DoubleDatePickerDialog.OnDateSetListener() {
 
-                        @Override
-                        public void onDateSet( DatePicker endDatePicker, int endYear, int endMonthOfYear,
-                                              int endDayOfMonth) {
-                            String textString = String.format("%d-%d-%d", endYear, endMonthOfYear + 1, endDayOfMonth);
-                            btn.setText(textString);
-                           // deadline=textString;
-                        }
-                    }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), true).show();
-                }
-            });
+
 
 
 
@@ -69,15 +63,7 @@ public class AddProjectActivity extends AppCompatActivity {
                                           if(isNoneOfInput==false)
                                           {
                                               //返回projectActivity
-                                              Intent intent = new Intent(AddProjectActivity.this,projectActivity .class);
-                                              startActivity(intent);
-                                              finish();
-                                          }
-                                      }
-                                  }
-        );
 
-        }
     public void dataSave(){
         String project=this.projectname.getText().toString();
         String deadline=this.btn.getText().toString();
@@ -86,6 +72,7 @@ public class AddProjectActivity extends AppCompatActivity {
             Toast.makeText(this,"项目名称不能为空", Toast.LENGTH_SHORT).show();
             return ;
         }
+
         isNoneOfInput=false;
         try {
             dataInsert(project, deadline,description);
@@ -99,9 +86,6 @@ public class AddProjectActivity extends AppCompatActivity {
 
 
         //清空输入栏
-       this.projectname.setText("");
-        this.btn.setText("");
-       this.projectdescription.setText("");
 
     }
     public void dataInsert(String projectName, String deadline,String projectDescription) {

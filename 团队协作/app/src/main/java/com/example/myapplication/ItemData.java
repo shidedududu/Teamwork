@@ -1,4 +1,4 @@
-package com.race604.flyrefresh.sample;
+package com.example.asd.testapp;
 
 import android.graphics.Color;
 
@@ -11,16 +11,16 @@ public class ItemData {
     int color;
     public int icon;
     public String title;
-    public Date time;
+    public String time;
 
-    public ItemData(int color, int icon, String title, Date time) {
+    public ItemData(int color, int icon, String title, String time) {
         this.color = color;
         this.icon = icon;
         this.title = title;
         this.time = time;
     }
 
-    public ItemData(int icon, String title) {
+    /*public ItemData(int icon, String title) {
         this(Color.DKGRAY, icon, title, new Date());
-    }
+    }*/
 }

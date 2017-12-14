@@ -1,9 +1,8 @@
-package com.example.administrator.team;
+package com.example.asd.testapp;
 
 /**
  * Created by Administrator on 2017/11/23.
  */
-import java.lang.reflect.Field;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,7 +14,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 
-
+import java.lang.reflect.Field;
 
 
 public class DoubleDatePickerDialog extends AlertDialog implements OnClickListener, OnDateChangedListener {

@@ -1,9 +1,8 @@
-package com.race604.flyrefresh.sample;
+package com.example.asd.testapp;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -47,5 +46,7 @@ public class SampleItemAnimator extends BaseItemAnimator {
 
         animator.start();
     }
+
+
 
 }
