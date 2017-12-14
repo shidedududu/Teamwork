@@ -1,5 +1,12 @@
 package com.example.asd.testapp;
 
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import java.util.Calendar;
+import android.database.Cursor;
+import android.content.Intent;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -21,14 +28,13 @@ public class AddProjectActivity extends AppCompatActivity {
     //private String deadline;
     //String deadline;
     TextView btn;
-    private EditText et;
+    //private EditText et;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_project);
 
-        btn = (TextView) findViewById(R.id.dateBtn);
-        et = (EditText) findViewById(R.id.et);
+
         // 获取SQLiteDatabase以操作SQL语句
         DB = SQLiteDatabase.openOrCreateDatabase(getFilesDir() + "/info.db",
                 null);
@@ -41,24 +47,14 @@ public class AddProjectActivity extends AppCompatActivity {
                 // 最后一个false表示不显示日期，如果要显示日期，最后参数可以是true或者不用输入
                 new DoubleDatePickerDialog(AddProjectActivity.this, 0, new DoubleDatePickerDialog.OnDateSetListener() {
 
-                    @Override
-                    public void onDateSet( DatePicker endDatePicker, int endYear, int endMonthOfYear,
-                                           int endDayOfMonth) {
-                        String textString = String.format("%d-%d-%d", endYear, endMonthOfYear + 1, endDayOfMonth);
-                        et.setText(textString);
-                        // deadline=textString;
-                    }
-                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DATE), true).show();
-            }
-        });
+
 
 
 
         //获取添加界面中输入的数据
         projectname=(EditText)findViewById(R.id.project_name);
-        et=(EditText)findViewById(R.id.et);
+        btn=(TextView)findViewById(R.id.dateBtn);
         projectdescription=(EditText)findViewById(R.id.project_description);
-
         //按下添加按钮后对数据库进行操作
         FloatingActionButton addBtn=(FloatingActionButton)findViewById(R.id.add);
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -67,24 +63,14 @@ public class AddProjectActivity extends AppCompatActivity {
                                           if(isNoneOfInput==false)
                                           {
                                               //返回projectActivity
-                                             // Intent intent = new Intent(AddProjectActivity.this,projectActivity .class);
-                                            //  Bundle bundle=new Bundle();
-                                            //  bundle.putString("isNoneOfInput","false");
-                                             // intent.putExtras(bundle);
-                                              finish();
-                                          }
 
-                                      }
-                                  }
-        );
-    }
     public void dataSave(){
         String project=this.projectname.getText().toString();
-        String deadline=this.et.getText().toString();
+        String deadline=this.btn.getText().toString();
         String description=this.projectdescription.getText().toString();
         if(project.trim().isEmpty()){
             Toast.makeText(this,"项目名称不能为空", Toast.LENGTH_SHORT).show();
-            return;
+            return ;
         }
 
         isNoneOfInput=false;
@@ -100,9 +86,6 @@ public class AddProjectActivity extends AppCompatActivity {
 
 
         //清空输入栏
-        this.projectname.setText("");
-        this.et.setText("");
-        this.projectdescription.setText("");
 
     }
     public void dataInsert(String projectName, String deadline,String projectDescription) {
