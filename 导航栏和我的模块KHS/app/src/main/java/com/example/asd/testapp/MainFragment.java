@@ -1,7 +1,6 @@
 package com.example.asd.testapp;
 
 import android.animation.Animator;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,11 +10,10 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,12 +26,10 @@ import android.widget.TextView;
 import com.race604.flyrefresh.FlyRefreshLayout;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-public class ProjectActivity extends AppCompatActivity implements FlyRefreshLayout.OnPullRefreshListener {
 
+public class MainFragment extends Fragment {
+/*
     private FlyRefreshLayout mFlylayout;
     private RecyclerView mListView;
     private SQLiteDatabase DB;
@@ -42,10 +38,15 @@ public class ProjectActivity extends AppCompatActivity implements FlyRefreshLayo
     private ArrayList<ItemData> mDataSet = new ArrayList<>();
     private Handler mHandler = new Handler();
     private LinearLayoutManager mLayoutManager;
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_project, container, false);
+        return rootView;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
         DB = SQLiteDatabase.openOrCreateDatabase(getFilesDir() + "/info.db",
                 null);
         try{
@@ -55,8 +56,6 @@ public class ProjectActivity extends AppCompatActivity implements FlyRefreshLayo
             initDataSet(select());
 
         }
-        setContentView(R.layout.activity_project);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -69,7 +68,7 @@ public class ProjectActivity extends AppCompatActivity implements FlyRefreshLayo
 
         mLayoutManager = new LinearLayoutManager(this);
         mListView.setLayoutManager(mLayoutManager);
-        mAdapter = new ItemAdapter(this);
+        mAdapter = new ProjectActivity.ItemAdapter(this);
 
         mListView.setAdapter(mAdapter);
 
@@ -85,7 +84,6 @@ public class ProjectActivity extends AppCompatActivity implements FlyRefreshLayo
             });
         }
     }
-
     private void initDataSet(Cursor cursor) {
         while(cursor.moveToNext()){
             String title;
@@ -170,17 +168,17 @@ public class ProjectActivity extends AppCompatActivity implements FlyRefreshLayo
 
         public ItemAdapter(Context context) {
             mInflater = LayoutInflater.from(context);
-           // dateFormat = SimpleDateFormat.getDateInstance(DateFormat.DEFAULT, Locale.ENGLISH);
+            // dateFormat = SimpleDateFormat.getDateInstance(DateFormat.DEFAULT, Locale.ENGLISH);
         }
 
         @Override
-        public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        public ItemViewHolder onCreateViewHolder( ViewGroup viewGroup, int i) {
             View view = mInflater.inflate(R.layout.view_list_item, viewGroup, false);
-            return new ItemViewHolder(view);
+            return new ProjectActivity.ItemViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(ItemViewHolder itemViewHolder, int i) {
+        public void onBindViewHolder( ItemViewHolder itemViewHolder, int i) {
             final ItemData data = mDataSet.get(i);
             ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
             drawable.getPaint().setColor(data.color);
@@ -226,4 +224,5 @@ public class ProjectActivity extends AppCompatActivity implements FlyRefreshLayo
         String deleteSql = "delete from project where _id=?";
         DB.execSQL(deleteSql, new String[] { id });
     }
+    */
 }

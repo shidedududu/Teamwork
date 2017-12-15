@@ -1,4 +1,4 @@
-package com.example.administrator.team;
+lpackage com.example.administrator.team;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

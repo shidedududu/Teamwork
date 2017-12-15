@@ -131,7 +131,6 @@ public class ProjectActivity extends AppCompatActivity implements FlyRefreshLayo
 
         return super.onOptionsItemSelected(item);
     }
-
     @Override
     public void onRefresh(FlyRefreshLayout view) {
         View child = mListView.getChildAt(0);
@@ -226,4 +225,11 @@ public class ProjectActivity extends AppCompatActivity implements FlyRefreshLayo
         String deleteSql = "delete from project where _id=?";
         DB.execSQL(deleteSql, new String[] { id });
     }
+
+    //底部栏
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_project, container, false);
+        return rootView;
+    }
+
 }
