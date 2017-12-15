@@ -1,120 +1,217 @@
-package com.example.administrator.team;
+package com.example.asd.testapp;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.graphics.Color;
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.database.Cursor;
-import android.widget.ImageView;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.app.ActionBar;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.AdapterView;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toast;
-import android.content.Intent;
-public class projectActivity extends AppCompatActivity {
-    private SQLiteDatabase DB;
-    private ListView add_project;
-    private ImageView Icon;
 
+import com.race604.flyrefresh.FlyRefreshLayout;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+public class ProjectActivity extends AppCompatActivity implements FlyRefreshLayout.OnPullRefreshListener {
+
+    private FlyRefreshLayout mFlylayout;
+    private RecyclerView mListView;
+    private SQLiteDatabase DB;
+    private ItemAdapter mAdapter;
+
+    private ArrayList<ItemData> mDataSet = new ArrayList<>();
+    private Handler mHandler = new Handler();
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_project);
-        Icon=(ImageView) findViewById(R.id.icon);
-        add_project = (ListView) findViewById(R.id.create_list);
-        Button refresh = (Button) findViewById(R.id.Refresh);
-        // 获取SQLiteDatabase以操作SQL语句
         DB = SQLiteDatabase.openOrCreateDatabase(getFilesDir() + "/info.db",
                 null);
-        //按下增加按钮后的响应，跳转增加界面
-        Button addBtn = (Button) findViewById(R.id.project);
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(projectActivity.this, AddProjectActivity.class);
-                startActivity(intent);
-            }
-        });
+        try{
+            initDataSet(select());}
+        catch (Exception e){
+            tableProjectCreate();
+            initDataSet(select());
 
-        //更新项目列表
-        replaceList();
+        }
+        setContentView(R.layout.activity_project);
 
-      /*  //点击项目进入任务界面
-        refresh.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(projectActivity.this, taskActivity.class);
-                startActivity(intent);
-            }
-        });*/
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //在listview显示数据库信息
-        refresh.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                try {
-                    refresh(v);
-                } catch (Exception e) {
-                    tableProjectCreate();
-                    Toast.makeText(projectActivity.this, "暂无项目", Toast.LENGTH_SHORT).show();
+        mFlylayout = (FlyRefreshLayout) findViewById(R.id.fly_layout);
+
+        mFlylayout.setOnPullRefreshListener(this);
+
+        mListView = (RecyclerView) findViewById(R.id.list);
+
+        mLayoutManager = new LinearLayoutManager(this);
+        mListView.setLayoutManager(mLayoutManager);
+        mAdapter = new ItemAdapter(this);
+
+        mListView.setAdapter(mAdapter);
+
+        mListView.setItemAnimator(new SampleItemAnimator());
+
+        View actionButton = mFlylayout.getHeaderActionButton();
+        if (actionButton != null) {
+            actionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mFlylayout.startRefresh();
                 }
-            }
-        });
+            });
+        }
+    }
 
-        //长按删除项目
-        add_project.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+    private void initDataSet(Cursor cursor) {
+        while(cursor.moveToNext()){
+            String title;
+            String time;
+            title=cursor.getString(cursor.getColumnIndex("ProjectName"));
+            time=cursor.getString(cursor.getColumnIndex("DeadlineTime"));
+            mDataSet.add(new ItemData(Color.parseColor("#76A9FC"), R.mipmap.ic_assessment_white_24dp, title, time));
+        }
+        mDataSet.add(new ItemData(Color.parseColor("#76A9FC"), R.mipmap.ic_assessment_white_24dp, "Meeting Minutes", "2017/5/4"));
+        mDataSet.add(new ItemData(Color.GRAY, R.mipmap.ic_folder_white_24dp, "Favorites Photos", "2017/12/14"));
+        mDataSet.add(new ItemData(Color.GRAY, R.mipmap.ic_folder_white_24dp, "Photos", "2018/1/1"));
+    }
 
+    private void addItemData(Cursor cursor) {
+        mListView.removeAllViews();
+        mDataSet.clear();
+        mAdapter.notifyDataSetChanged();
+        while(cursor.moveToNext()) {
+            String title;
+            String time;
+            title=cursor.getString(cursor.getColumnIndex("ProjectName"));
+            time=cursor.getString(cursor.getColumnIndex("DeadlineTime"));
+            ItemData itemData = new ItemData(Color.parseColor("#FFC970"), R.mipmap.ic_smartphone_white_24dp, title, time);
+            mDataSet.add(0, itemData);
+            mAdapter.notifyItemInserted(0);
+            mLayoutManager.scrollToPosition(0);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRefresh(FlyRefreshLayout view) {
+        View child = mListView.getChildAt(0);
+        if (child != null) {
+            bounceAnimateView(child.findViewById(R.id.icon));
+        }
+
+        mHandler.postDelayed(new Runnable() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-                                           int arg2, long arg3) {
-                // 获取所点击项的_id
-                TextView tv = (TextView) arg1.findViewById(R.id.tv_id);
-                final String id = tv.getText().toString();
-                // 通过Dialog提示是否删除
-                AlertDialog.Builder builder = new AlertDialog.Builder(
-                        projectActivity.this);
-                builder.setMessage("删除该项目？");
-                // 确定按钮点击事件
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        delete(id);
-                        replaceList();// 删除后刷新列表
-                    }
-                });
-                // 取消按钮点击事件
-                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.create().show();
-
-                return true;
+            public void run() {
+                mFlylayout.onRefreshFinish();
             }
-        });
+        }, 2000);
     }
 
-    public void refresh(View v) {
-        replaceList();
+    private void bounceAnimateView(View view) {
+        if (view == null) {
+            return;
+        }
+
+        Animator swing = ObjectAnimator.ofFloat(view, "rotationX", 0, 30, -20, 0);
+        swing.setDuration(400);
+        swing.setInterpolator(new AccelerateInterpolator());
+        swing.start();
     }
-    public void replaceList() {
-        Cursor cursor=select();
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-                R.layout.values_item, cursor, new String[]{"_id","ProjectName", "DeadlineTime",},
-                new int[]{R.id.tv_id,R.id.project_name, R.id.etdeadline},
-                SimpleCursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-        add_project.setAdapter(adapter);
+
+    @Override
+    public void onRefreshAnimationEnd(FlyRefreshLayout view) {
+        addItemData(select());
     }
+
+    private class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+
+        private LayoutInflater mInflater;
+        private DateFormat dateFormat;
+
+        public ItemAdapter(Context context) {
+            mInflater = LayoutInflater.from(context);
+           // dateFormat = SimpleDateFormat.getDateInstance(DateFormat.DEFAULT, Locale.ENGLISH);
+        }
+
+        @Override
+        public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View view = mInflater.inflate(R.layout.view_list_item, viewGroup, false);
+            return new ItemViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ItemViewHolder itemViewHolder, int i) {
+            final ItemData data = mDataSet.get(i);
+            ShapeDrawable drawable = new ShapeDrawable(new OvalShape());
+            drawable.getPaint().setColor(data.color);
+            itemViewHolder.icon.setBackgroundDrawable(drawable);
+            itemViewHolder.icon.setImageResource(data.icon);
+            itemViewHolder.title.setText(data.title);
+            itemViewHolder.subTitle.setText(data.time);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mDataSet.size();
+        }
+    }
+
+    private static class ItemViewHolder extends RecyclerView.ViewHolder {
+
+        ImageView icon;
+        TextView title;
+        TextView subTitle;
+
+        public ItemViewHolder(View itemView) {
+            super(itemView);
+            icon = (ImageView) itemView.findViewById(R.id.icon);
+            title = (TextView) itemView.findViewById(R.id.title);
+            subTitle = (TextView) itemView.findViewById(R.id.subtitle);
+        }
+
+    }
+
+    //数据库操作部分
     public void tableProjectCreate(){
         String createSql= "create table project(_id integer primary key autoincrement, ProjectName," +
                 "DeadlineTime,ProjectDescription)";
@@ -129,5 +226,4 @@ public class projectActivity extends AppCompatActivity {
         String deleteSql = "delete from project where _id=?";
         DB.execSQL(deleteSql, new String[] { id });
     }
-
 }
