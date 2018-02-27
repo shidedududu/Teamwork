@@ -8,12 +8,17 @@ import java.util.Collection;
 @Table(name = "task", schema = "test", catalog = "")
 public class TaskEntity {
     private int id;
-    private Timestamp deadline;
+    private String deadline;
     private String taskDesciption;
     private double completion;
     private transient Collection<ExecutorEntity> executorsById;
     private transient Collection<SubtaskEntity> subtasksById;
     private ProjectEntity projectByProId;
+    private String taskName;
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -26,14 +31,11 @@ public class TaskEntity {
     }
 
     @Basic
-    @Column(name = "Deadline", nullable = true)
-    public Timestamp getDeadline() {
+    @Column(name = "Deadline", nullable = true, length = 20)
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Timestamp deadline) {
-        this.deadline = deadline;
-    }
 
     @Basic
     @Column(name = "TaskDesciption", nullable = true, length = 150)
@@ -109,5 +111,15 @@ public class TaskEntity {
 
     public void setProjectByProId(ProjectEntity projectByProId) {
         this.projectByProId = projectByProId;
+    }
+
+    @Basic
+    @Column(name = "TaskName", nullable = false, length = 30)
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 }

@@ -9,8 +9,10 @@ public class ProjectEntity {
     private int id;
     private String proDescription;
     private transient Collection<MemberEntity> membersById;
-    private UserEntity userByUserId;
+    private transient UserEntity userByUserId;
     private transient Collection<TaskEntity> tasksById;
+    private String projectName;
+    private String deadline;
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -79,5 +81,25 @@ public class ProjectEntity {
 
     public void setTasksById(Collection<TaskEntity> tasksById) {
         this.tasksById = tasksById;
+    }
+
+    @Basic
+    @Column(name = "ProjectName", nullable = false, length = 50)
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    @Basic
+    @Column(name = "Deadline", nullable = true, length = 25)
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 }

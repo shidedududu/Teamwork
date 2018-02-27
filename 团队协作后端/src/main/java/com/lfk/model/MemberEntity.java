@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Table(name = "member", schema = "test", catalog = "")
 public class MemberEntity {
     private int id;
-    private int authority;
+    private int authority;//等级0、1、2分别代表项目拥有者、
+    // 项目普通用户与管理员
     private ProjectEntity projectByProId;
     private UserEntity userByUserId;
 
